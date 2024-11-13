@@ -2,9 +2,39 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #f0f2f5 25%, #e9ecef 25%, #e9ecef 50%, #f0f2f5 50%, #f0f2f5 75%, #e9ecef 75%, #e9ecef 100%);
-    background-size: 56.57px 56.57px;
+	background-size: 56.57px 56.57px;
+	background-attachment: fixed;
     margin: 0;
     padding: 0;
+    overflow: auto; /* Asegura que la página sea desplazable */
+    position: relative;
+}
+
+.background-emojis {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.emoji {
+    position: absolute;
+    font-size: 2rem;
+    text-align: center;
+    animation: move-diagonally 10s linear infinite;
+    animation-duration: calc(5s + 5 * random());
+}
+
+@keyframes move-diagonally {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(100px, 100px);
+    }
 }
 
 .container {

@@ -125,3 +125,24 @@ document.querySelectorAll('[name="plato_nombre"]').forEach(input => {
         this.closest('.plato').querySelector('.plato-nombre').textContent = this.value || 'Nuevo Plato';
     });
 });
+
+// Aleatorizador de Emojis
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.background-emojis');
+    const emojis = container.innerHTML;
+
+    // Duplicar los emojis
+    for (let i = 0; i < 4; i++) { // Puedes ajustar el número de duplicados
+        container.innerHTML += emojis;
+    }
+
+    document.querySelectorAll('.emoji').forEach(emoji => {
+        const randomTop = Math.floor(Math.random() * 100);
+        const randomLeft = Math.floor(Math.random() * 100);
+        const randomDuration = Math.random() * 10 + 5;
+
+        emoji.style.top = randomTop + '%';
+        emoji.style.left = randomLeft + '%';
+        emoji.style.animationDuration = randomDuration + 's';
+    });
+});
