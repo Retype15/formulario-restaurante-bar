@@ -1,0 +1,146 @@
+/* Estilos generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f2f5 25%, #e9ecef 25%, #e9ecef 50%, #f0f2f5 50%, #f0f2f5 75%, #e9ecef 75%, #e9ecef 100%);
+    background-size: 56.57px 56.57px;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 60%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    margin-top: 50px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    background: #fff;
+}
+
+legend {
+    padding: 0 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+label {
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="time"],
+input[type="number"],
+select {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+.dias-operacion,
+.metodos-pago {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dia,
+.metodo {
+    padding: 10px;
+    background: #e9ecef;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.dia:hover,
+.metodo:hover {
+    background: #ced4da;
+}
+
+.dia.selected,
+.metodo.selected {
+    background: #007bff;
+    color: #fff;
+}
+
+#metodos_pago_container input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.plato {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background: #f8f9fa;
+}
+
+.plato-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.plato-body {
+    display: none;
+    padding: 10px;
+}
+
+.plato-body.active {
+    display: block;
+}
+
+.plato label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.plato input {
+    display: block;
+    margin-bottom: 10px;
+}
