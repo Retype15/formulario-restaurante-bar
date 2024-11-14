@@ -105,22 +105,6 @@ button:hover {
     background: #0056b3;
 }
 
-#guardar-boton {
-    padding: 12px 24px; /* Padding vertical de 12px y horizontal de 24px */
-    font-size: 16px; /* Tamaño de la fuente para el texto del botón */
-    background-color: #4CAF50; /* Color de fondo verde */
-    color: white; /* Color del texto */
-    border: none; /* Eliminar borde por defecto */
-    border-radius: 10px; /* Bordes redondeados */
-    cursor: pointer; /* Cambiar el cursor a una mano al pasar sobre el botón */
-    text-align: center; /* Asegurarse de que el texto esté centrado dentro del botón */ 
-}
-
-#guardar-boton:hover {
-    background-color: #45a049; /* Color de fondo cuando el ratón pasa sobre el botón */
-}
-
-
 .dias-operacion,
 .metodos-pago {
     display: flex;
