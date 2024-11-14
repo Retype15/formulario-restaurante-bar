@@ -169,34 +169,22 @@ document.getElementById('add_plato').addEventListener('click', function() {
     document.getElementById('menu_container').appendChild(platoContainer);
 });
 
-// Captura del formulario para crear el archivo JSON
 document.getElementById('localForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     const diasOperacion = Array.from(document.querySelectorAll('.dia.selected')).map(el => parseInt(el.getAttribute('data-dia')));
     const metodosPago = Array.from(document.querySelectorAll('.metodo.selected')).map(el => parseInt(el.getAttribute('data-metodo')));
-
     const platos = Array.from(document.querySelectorAll('.plato')).map(plato => ({
         nombre: plato.querySelector('[name="plato_nombre"]').value,
         precio: parseFloat(plato.querySelector('[name="plato_precio"]').value),
         calidad: plato.querySelector('[name="plato_calidad"]').value,
         pedidos_promedio: parseInt(plato.querySelector('[name="plato_pedidos"]').value)
     }));
-
     const coordenadas = document.getElementById('ubicacion').value;
-    //const direccion = document.getElementById('direccion').value;
-    const nombreLugar = document.getElementById('nombre').value;
-    const calle = document.getElementById('calle').value;
-    const consejo = document.getElementById('consejo').value;
-    const municipio = document.getElementById('municipio').value;
-    const ciudad = document.getElementById('ciudad').value;
-    const codigoPostal = document.getElementById('codigo_postal').value;
-    const pais = document.getElementById('pais').value;
 
     const localData = {
-        nombre: nombreLugar,
-        //direccion: direccion,
-        municipio: municipio,
+        nombre: document.getElementById('nombre').value,
+        municipio: document.getElementById('municipio').value,
         telefono: document.getElementById('telefono').value,
         correo_electronico: document.getElementById('correo').value,
         pagina_web: document.getElementById('pagina_web').value,
@@ -218,14 +206,14 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
         promociones_descuentos: document.getElementById('promociones_descuentos').value,
         menu: platos,
         ubicacion: {
-            nombre_lugar: nombreLugar, // Nuevo campo: Nombre del lugar
-            calle: calle, // Nuevo campo: Calle
-            consejo: consejo, // Nuevo campo: Consejo o vecindario
-            municipio: municipio, // Nuevo campo: Municipio
-            ciudad: ciudad, // Nuevo campo: Ciudad
-            codigo_postal: codigoPostal, // Nuevo campo: Código postal
-            pais: pais, // Nuevo campo: País
-            coordenadas: coordenadas // Coordenadas del mapa
+            nombre_lugar: document.getElementById('nombre').value,
+            calle: document.getElementById('calle').value,
+            consejo: document.getElementById('consejo').value,
+            municipio: document.getElementById('municipio').value,
+            ciudad: document.getElementById('ciudad').value,
+            codigo_postal: document.getElementById('codigo_postal').value,
+            pais: document.getElementById('pais').value,
+            coordenadas: coordenadas
         }
     };
 
@@ -236,7 +224,12 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
         },
         body: JSON.stringify(localData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error al guardar los datos: ${response.statusText}`);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.message === 'Archivo guardado correctamente') {
             alert('Datos guardados correctamente en el servidor.');
@@ -249,6 +242,7 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
         alert('Hubo un error al enviar los datos al servidor.');
     });
 });
+
 /*
     const localName = localData.nombre.replace(/\s+/g, '_').toLowerCase();
     const fileName = `${localName}.json`;
