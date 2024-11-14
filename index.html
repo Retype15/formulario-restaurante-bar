@@ -110,12 +110,33 @@
             </fieldset>
 
             <fieldset>
-                <legend>Ubicación</legend>
-                <div id="map" style="height: 400px; width: 100%;"></div>
-                <input type="text" id="ubicacion" name="ubicacion" readonly>
-                <input type="text" id="municipio" name="municipio" readonly>
-                <input type="text" id="direccion" name="direccion" readonly>
-            </fieldset>
+				<legend>Ubicación</legend>
+				<div id="map" style="height: 400px; width: 100%;"></div>
+				
+				<button type="button" id="obtener_ubicacion">Obtener mi ubicación</button><br><br>
+				
+				<!-- Campos para la dirección desglosada -->
+				<label for="calle">Calle:</label>
+				<input type="text" id="calle" name="calle"><br><br>
+
+				<label for="consejo">Consejo:</label>
+				<input type="text" id="consejo" name="consejo"><br><br>
+
+				<label for="municipio">Municipio:</label>
+				<input type="text" id="municipio" name="municipio"><br><br>
+
+				<label for="ciudad">Ciudad:</label>
+				<input type="text" id="ciudad" name="ciudad"><br><br>
+
+				<label for="codigo_postal">Código Postal:</label>
+				<input type="text" id="codigo_postal" name="codigo_postal"><br><br>
+
+				<label for="pais">País:</label>
+				<input type="text" id="pais" name="pais"><br><br>
+
+				<input type="text" id="ubicacion" name="ubicacion" readonly><br><br>
+			</fieldset>
+
 
             <button type="submit">Guardar Datos</button>
         </form>

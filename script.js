@@ -18,6 +18,30 @@ function initMap() {
     });
 }
 
+//Funcion para obtener la poss del usuario y centrar el mpapa
+document.getElementById('obtener_ubicacion').addEventListener('click', getUserLocation);
+
+function getUserLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const latlng = L.latLng(lat, lng);
+
+            // Mover el mapa a la ubicación del usuario
+            map.setView(latlng, 12);
+
+            // Colocar un marcador en la ubicación del usuario
+            placeMarker(latlng);
+        }, function(error) {
+            alert('No se pudo obtener la ubicación del usuario.');
+        });
+    } else {
+        alert('La geolocalización no está disponible en este navegador.');
+    }
+}
+
+
 // Colocar marcador en el mapa y obtener la ubicación
 function placeMarker(latlng) {
     if (marker) {
@@ -27,18 +51,51 @@ function placeMarker(latlng) {
     }
 
     // Actualizar el campo de ubicación con las coordenadas lat, lng
-    document.getElementById('ubicacion').value = latlng.lat + ',' + latlng.lng;
+    const ubicacionField = document.getElementById('ubicacion');
+    ubicacionField.value = latlng.lat + ',' + latlng.lng;  // Se muestra la latitud y longitud como texto
 
     // Obtener la dirección de la ubicación con Nominatim (geocodificación de OpenStreetMap)
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latlng.lat}&lon=${latlng.lng}&format=json`)
         .then(response => response.json())
         .then(data => {
             if (data && data.address) {
-                const municipio = data.address.city || data.address.town || data.address.village || '';
-                const direccionCompleta = data.display_name;
-                // Rellenar los campos del formulario con la información obtenida
-                document.getElementById('municipio').value = municipio;
-                document.getElementById('direccion').value = direccionCompleta;
+                // Extraer los datos de la dirección
+                const nombre = data.address.house_number || '';  // Número de la casa (ej. 158)
+                const calle = data.address.road || '';  // Nombre de la calle (ej. "Lugareño")
+                const consejo = data.address.suburb || data.address.neighbourhood || '';  // Barrio o consejo (si está disponible)
+                const municipio = data.address.city || data.address.town || data.address.village || data.address.county || '';  // Municipio o ciudad
+                const ciudad = data.address.state || '';  // Ciudad o estado
+                const codigoPostal = data.address.postcode || '';  // Código postal
+                const pais = data.address.country || '';  // País (ej. Cuba)
+
+                // Distribuir los datos en los campos correspondientes del formulario
+                document.getElementById('nombre').value = nombre || ''; // Número o nombre de la casa
+                document.getElementById('calle').value = calle || ''; // Nombre de la calle
+                document.getElementById('consejo').value = consejo || ''; // Barrio o consejo
+                document.getElementById('municipio').value = municipio || ''; // Municipio
+                document.getElementById('ciudad').value = ciudad || ''; // Ciudad
+                document.getElementById('codigo_postal').value = codigoPostal || ''; // Código postal
+                document.getElementById('pais').value = pais || ''; // País
+
+                // Si no se encuentra alguno de estos valores, se puede mostrar un mensaje por defecto
+                if (!municipio) {
+                    document.getElementById('municipio').value = 'Municipio no disponible';
+                }
+				if (!calle) {
+                    document.getElementById('calle').value = 'Municipio no disponible';
+                }
+                if (!consejo) {
+                    document.getElementById('consejo').value = 'Municipio no disponible';
+                }
+                if (!ciudad) {
+                    document.getElementById('ciudad').value = 'Ciudad no disponible';
+                }
+                if (!codigoPostal) {
+                    document.getElementById('codigo_postal').value = 'Código postal no disponible';
+                }
+                if (!pais) {
+                    document.getElementById('pais').value = 'País no disponible';
+                }
             } else {
                 alert('No se encontró dirección para esta ubicación.');
             }
@@ -48,6 +105,9 @@ function placeMarker(latlng) {
             alert('Hubo un error al obtener la dirección.');
         });
 }
+
+
+
 
 // Delegación de eventos para los botones de días y métodos de pago
 document.querySelectorAll('.dia').forEach(dia => {
@@ -124,12 +184,19 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
     }));
 
     const coordenadas = document.getElementById('ubicacion').value;
-    const direccion = coordenadas ? 'Ubicación marcada en el mapa' : document.getElementById('direccion').value;
+    //const direccion = document.getElementById('direccion').value;
+    const nombreLugar = document.getElementById('nombre').value;
+    const calle = document.getElementById('calle').value;
+    const consejo = document.getElementById('consejo').value;
+    const municipio = document.getElementById('municipio').value;
+    const ciudad = document.getElementById('ciudad').value;
+    const codigoPostal = document.getElementById('codigo_postal').value;
+    const pais = document.getElementById('pais').value;
 
     const localData = {
-        nombre: document.getElementById('nombre').value,
-        direccion: direccion,
-        municipio: document.getElementById('municipio').value,
+        nombre: nombreLugar,
+        //direccion: direccion,
+        municipio: municipio,
         telefono: document.getElementById('telefono').value,
         correo_electronico: document.getElementById('correo').value,
         pagina_web: document.getElementById('pagina_web').value,
@@ -151,10 +218,14 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
         promociones_descuentos: document.getElementById('promociones_descuentos').value,
         menu: platos,
         ubicacion: {
-            municipio: document.getElementById('municipio').value,
-            calles: document.getElementById('direccion').value,
-            coordenadas: coordenadas,
-            direccion: direccion
+            nombre_lugar: nombreLugar, // Nuevo campo: Nombre del lugar
+            calle: calle, // Nuevo campo: Calle
+            consejo: consejo, // Nuevo campo: Consejo o vecindario
+            municipio: municipio, // Nuevo campo: Municipio
+            ciudad: ciudad, // Nuevo campo: Ciudad
+            codigo_postal: codigoPostal, // Nuevo campo: Código postal
+            pais: pais, // Nuevo campo: País
+            coordenadas: coordenadas // Coordenadas del mapa
         }
     };
 
@@ -169,6 +240,7 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
     a.click();
     document.body.removeChild(a); 
 });
+
 
 // Aleatorización de emojis después de cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
