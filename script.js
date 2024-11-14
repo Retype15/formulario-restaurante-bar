@@ -122,6 +122,18 @@ document.querySelectorAll('.metodo').forEach(metodo => {
     });
 });
 
+document.querySelectorAll('.entrega').forEach(entrega => {
+    entrega.addEventListener('click', function() {
+        this.classList.toggle('selected');
+    });
+});
+
+document.querySelectorAll('.reserva').forEach(reserva => {
+    reserva.addEventListener('click', function() {
+        this.classList.toggle('selected');
+    });
+});
+
 // Delegación de eventos para los botones de platos
 document.getElementById('menu_container').addEventListener('click', function(event) {
     if (event.target.classList.contains('toggle-plato')) {
@@ -175,7 +187,9 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
 
     const diasOperacion = Array.from(document.querySelectorAll('.dia.selected')).map(el => parseInt(el.getAttribute('data-dia')));
     const metodosPago = Array.from(document.querySelectorAll('.metodo.selected')).map(el => parseInt(el.getAttribute('data-metodo')));
-
+    const opcionesEntrega = Array.from(document.querySelectorAll('.entrega.selected')).map(el => parseInt(el.getAttribute('opciones-entrega')));
+    const opcionesReserva = Array.from(document.querySelectorAll('.reserva.selected')).map(el => parseInt(el.getAttribute('opciones-reserva')));
+	
     const platos = Array.from(document.querySelectorAll('.plato')).map(plato => ({
         nombre: plato.querySelector('[name="plato_nombre"]').value,
         precio: parseFloat(plato.querySelector('[name="plato_precio"]').value),
@@ -208,8 +222,8 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
             dias_operacion: diasOperacion
         },
         capacidad: parseInt(document.getElementById('capacidad').value),
-        opciones_entrega: document.getElementById('opciones_entrega').value,
-        opciones_reserva: document.getElementById('opciones_reserva').value,
+        opciones_entrega: opcionesEntrega,
+        opciones_reserva: opcionesReserva,
         rango_precios: {
             minimo: parseFloat(document.getElementById('rango_precios_min').value),
             maximo: parseFloat(document.getElementById('rango_precios_max').value)

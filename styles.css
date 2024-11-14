@@ -106,14 +106,19 @@ button:hover {
 }
 
 .dias-operacion,
-.metodos-pago {
+.metodos-pago,
+.opciones-entrega,
+.opciones-reserva
+ {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 }
 
 .dia,
-.metodo {
+.metodo,
+.entrega,
+.reserva {
     padding: 10px;
     background: #e9ecef;
     border-radius: 5px;
@@ -122,12 +127,16 @@ button:hover {
 }
 
 .dia:hover,
-.metodo:hover {
+.metodo:hover,
+.entrega:hover,
+.reserva:hover {
     background: #ced4da;
 }
 
 .dia.selected,
-.metodo.selected {
+.metodo.selected,
+.entrega.selected,
+.reserva.selected {
     background: #007bff;
     color: #fff;
 }

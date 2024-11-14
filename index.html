@@ -75,11 +75,21 @@
                 <label for="capacidad">Capacidad:</label>
                 <input type="number" id="capacidad" name="capacidad" required><br><br>
 
-                <label for="opciones_entrega">Opciones de Entrega:</label>
-                <input type="text" id="opciones_entrega" name="opciones_entrega"><br><br>
+                <label for="opciones_entrega">Opciones de Entrega:</label><br>
+                <div class="opciones-entrega">
+                    <div class="entrega" data-entrega="0">A domicilio</div>
+                    <div class="entrega" data-entrega="1">Para llevar</div>
+                    <div class="entrega" data-entrega="2">Entrega en local</div>
+                    <div class="entrega" data-entrega="3">Otros</div>
+                </div><br>
 
-                <label for="opciones_reserva">Opciones de Reserva:</label>
-                <input type="text" id="opciones_reserva" name="opciones_reserva"><br><br>
+                <label for="opciones_reserva">Opciones de Reserva:</label><br>
+                <div class="opciones-reserva">
+                    <div class="reserva" data-reserva="0">Reservas en linea</div>
+                    <div class="reserva" data-reserva="1">Reservas por teléfono</div>
+                    <div class="reserva" data-reserva="2">Reservas en persona</div>
+                    <div class="reserva" data-reserva="3">Otros</div>
+                </div>
             </fieldset>
 
             <fieldset>
