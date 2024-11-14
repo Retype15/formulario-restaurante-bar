@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@google-cloud/storage": "^7.14.0",
     "archiver": "^7.0.1",
     "express": "^4.21.1",
     "next": "^15.0.3",
