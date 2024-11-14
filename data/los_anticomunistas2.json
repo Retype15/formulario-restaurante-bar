@@ -1,0 +1,48 @@
+{
+  "nombre": "Los anticomunistas2",
+  "municipio": "Revolution Square",
+  "telefono": "059309803",
+  "correo_electronico": "reynierramos280@gmail.com",
+  "pagina_web": "http://eslapingarcia.com",
+  "tipo_cocina": "Limpia",
+  "tipo_establecimiento": 0,
+  "horario": {
+    "apertura": "12:12",
+    "cierre": "13:34",
+    "dias_operacion": [
+      0,
+      1,
+      4
+    ]
+  },
+  "capacidad": 100,
+  "opciones_entrega": "Carrito",
+  "opciones_reserva": "No",
+  "rango_precios": {
+    "minimo": 1000,
+    "maximo": 12345
+  },
+  "metodos_pago": [
+    1,
+    2
+  ],
+  "promociones_descuentos": "akinoasemoeso",
+  "menu": [
+    {
+      "nombre": "Marihuana",
+      "precio": 6000,
+      "calidad": "Excelente",
+      "pedidos_promedio": 777
+    }
+  ],
+  "ubicacion": {
+    "nombre_lugar": "Los anticomunistas2",
+    "calle": "Calle F",
+    "consejo": "Consejo no disponible",
+    "municipio": "Revolution Square",
+    "ciudad": "Havana",
+    "codigo_postal": "10428",
+    "pais": "Cuba",
+    "coordenadas": "23.134279024134607,-82.38808451219874"
+  }
+}

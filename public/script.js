@@ -60,7 +60,7 @@ function placeMarker(latlng) {
         .then(data => {
             if (data && data.address) {
                 // Extraer los datos de la dirección
-                const nombre = data.address.house_number || '';  // Número de la casa (ej. 158)
+                //const nombre = data.address.house_number || '';  // Número de la casa (ej. 158)
                 const calle = data.address.road || '';  // Nombre de la calle (ej. "Lugareño")
                 const consejo = data.address.suburb || data.address.neighbourhood || '';  // Barrio o consejo (si está disponible)
                 const municipio = data.address.city || data.address.town || data.address.village || data.address.county || '';  // Municipio o ciudad
@@ -69,7 +69,7 @@ function placeMarker(latlng) {
                 const pais = data.address.country || '';  // País (ej. Cuba)
 
                 // Distribuir los datos en los campos correspondientes del formulario
-                document.getElementById('nombre').value = nombre || ''; // Número o nombre de la casa
+                //document.getElementById('nombre').value = nombre || ''; // Número o nombre de la casa
                 document.getElementById('calle').value = calle || ''; // Nombre de la calle
                 document.getElementById('consejo').value = consejo || ''; // Barrio o consejo
                 document.getElementById('municipio').value = municipio || ''; // Municipio

@@ -173,3 +173,29 @@ button:hover {
     display: block;
     margin-bottom: 10px;
 }
+
+/* Estilos para el botón de menú en la esquina superior derecha */
+.menu-button {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+/* Estilos para el menú desplegable */
+.menu-dropdown {
+    position: fixed;
+    top: 40px;
+    right: 10px;
+    display: none;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

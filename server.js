@@ -1,10 +1,18 @@
-// server.js
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const archiver = require('archiver');
 
 const app = express();
 app.use(express.json()); // Middleware para parsear JSON
+
+// Sirve archivos estáticos desde la carpeta "public"
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Ruta principal para servir un archivo HTML (index.html)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // Ruta para guardar el archivo JSON en la carpeta 'data'
 app.post('/save-data', (req, res) => {
@@ -20,6 +28,15 @@ app.post('/save-data', (req, res) => {
         }
         res.status(200).json({ message: 'Archivo guardado correctamente' });
     });
+});
+
+app.get('/download-data', (req, res) => {
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    res.attachment('data.zip');
+
+    archive.pipe(res);
+    archive.directory(path.join(__dirname, 'data'), false);
+    archive.finalize();
 });
 
 const PORT = 3000;

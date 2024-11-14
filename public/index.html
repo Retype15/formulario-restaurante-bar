@@ -10,6 +10,17 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
+	<!-- Botón del menú en la esquina superior derecha -->
+    <button class="menu-button" onclick="toggleMenu()">Menú</button>
+
+    <!-- Menú desplegable para la contraseña -->
+    <div class="menu-dropdown" id="menuDropdown">
+        <label for="passwordInput">Contraseña:</label>
+        <input type="password" id="passwordInput" placeholder="Ingresa la contraseña">
+        <button onclick="verifyPassword()">Descargar Datos</button>
+        <p id="menuMessage"></p>
+    </div>
+
     <div class="background-emojis">
         <div class="emoji">🍔</div>
         <div class="emoji">🍕</div>
@@ -144,6 +155,7 @@
 
     <!-- Cargar el script JavaScript personalizado al final -->
     <script src="script.js"></script>
+	<script src="menu.js"></script>
 
     <!-- Cargar Leaflet.js -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
