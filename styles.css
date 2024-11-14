@@ -25,7 +25,6 @@ body {
     font-size: 2rem;
     text-align: center;
     animation: move-diagonally 10s linear infinite;
-    animation-duration: calc(5s + 5 * random());
 }
 
 @keyframes move-diagonally {

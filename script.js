@@ -1,8 +1,13 @@
+// Geocodificador de Google Maps (definido al cargar el mapa)
+let geocoder;
+let map;
+let marker;
+
+// Captura del formulario para crear el archivo JSON
 document.getElementById('localForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     const diasOperacion = Array.from(document.querySelectorAll('.dia.selected')).map(el => parseInt(el.getAttribute('data-dia')));
-
     const metodosPago = Array.from(document.querySelectorAll('.metodo.selected')).map(el => parseInt(el.getAttribute('data-metodo')));
 
     const platos = Array.from(document.querySelectorAll('.plato')).map(plato => ({
@@ -12,9 +17,12 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
         pedidos_promedio: parseInt(plato.querySelector('[name="plato_pedidos"]').value)
     }));
 
+    const coordenadas = document.getElementById('ubicacion').value;
+    const direccion = coordenadas ? 'Ubicación marcada en el mapa' : document.getElementById('direccion').value;
+
     const localData = {
         nombre: document.getElementById('nombre').value,
-        direccion: document.getElementById('direccion').value,
+        direccion: direccion,
         municipio: document.getElementById('municipio').value,
         telefono: document.getElementById('telefono').value,
         correo_electronico: document.getElementById('correo').value,
@@ -35,7 +43,13 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
         },
         metodos_pago: metodosPago,
         promociones_descuentos: document.getElementById('promociones_descuentos').value,
-        menu: platos
+        menu: platos,
+        ubicacion: {
+            municipio: document.getElementById('municipio').value,
+            calles: document.getElementById('direccion').value,
+            coordenadas: coordenadas,
+            direccion: direccion
+        }
     };
 
     const localName = localData.nombre.replace(/\s+/g, '_').toLowerCase();
@@ -45,9 +59,12 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
     const a = document.createElement('a');
     a.href = URL.createObjectURL(file);
     a.download = fileName;
+    document.body.appendChild(a); 
     a.click();
+    document.body.removeChild(a); 
 });
 
+// Delegación de eventos para los botones de días y métodos de pago
 document.querySelectorAll('.dia').forEach(dia => {
     dia.addEventListener('click', function() {
         this.classList.toggle('selected');
@@ -60,14 +77,34 @@ document.querySelectorAll('.metodo').forEach(metodo => {
     });
 });
 
+// Delegación de eventos para los botones de platos
+document.getElementById('menu_container').addEventListener('click', function(event) {
+    if (event.target.classList.contains('toggle-plato')) {
+        const body = event.target.closest('.plato').querySelector('.plato-body');
+        body.classList.toggle('active');
+        event.target.textContent = body.classList.contains('active') ? '▲' : '▼';
+    }
+    if (event.target.classList.contains('remove-plato')) {
+        event.target.closest('.plato').remove();
+    }
+});
+
+// Actualización dinámica del nombre del plato en el encabezado
+document.getElementById('menu_container').addEventListener('input', function(event) {
+    if (event.target.name === 'plato_nombre') {
+        const header = event.target.closest('.plato').querySelector('.plato-nombre');
+        header.textContent = event.target.value || 'Nuevo Plato';
+    }
+});
+
+// Añadir nuevo plato
 document.getElementById('add_plato').addEventListener('click', function() {
     const platoContainer = document.createElement('div');
     platoContainer.classList.add('plato');
-
     platoContainer.innerHTML = `
         <div class="plato-header">
-            <span class="plato-nombre">Nuevo Plato</span>
             <button type="button" class="toggle-plato">▼</button>
+            <span class="plato-nombre">Nuevo Plato</span>
             <button type="button" class="remove-plato">Eliminar</button>
         </div>
         <div class="plato-body">
@@ -84,55 +121,66 @@ document.getElementById('add_plato').addEventListener('click', function() {
             <input type="number" name="plato_pedidos" required><br><br>
         </div>
     `;
-
     document.getElementById('menu_container').appendChild(platoContainer);
-
-    // Añadir eventos a los nuevos botones
-    platoContainer.querySelector('.toggle-plato').addEventListener('click', function() {
-        const body = this.parentElement.nextElementSibling;
-        body.classList.toggle('active');
-        this.textContent = body.classList.contains('active') ? '▲' : '▼';
-    });
-
-    platoContainer.querySelector('.remove-plato').addEventListener('click', function() {
-        platoContainer.remove();
-    });
-
-    // Actualizar el nombre del plato en el encabezado
-    platoContainer.querySelector('[name="plato_nombre"]').addEventListener('input', function() {
-        platoContainer.querySelector('.plato-nombre').textContent = this.value || 'Nuevo Plato';
-    });
 });
 
-// Añadir eventos a los botones iniciales
-document.querySelectorAll('.toggle-plato').forEach(button => {
-    button.addEventListener('click', function() {
-        const body = this.parentElement.nextElementSibling;
-        body.classList.toggle('active');
-        this.textContent = body.classList.contains('active') ? '▲' : '▼';
+// Inicializar el mapa al cargar la página
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 23.1136, lng: -82.3666 },
+        zoom: 12
     });
-});
 
-document.querySelectorAll('.remove-plato').forEach(button => {
-    button.addEventListener('click', function() {
-        this.parentElement.parentElement.remove();
+    geocoder = new google.maps.Geocoder();
+
+    map.addListener('click', function(event) {
+        placeMarker(event.latLng);
     });
-});
+}
 
-// Actualizar el nombre del plato en el encabezado inicial
-document.querySelectorAll('[name="plato_nombre"]').forEach(input => {
-    input.addEventListener('input', function() {
-        this.closest('.plato').querySelector('.plato-nombre').textContent = this.value || 'Nuevo Plato';
+// Colocar marcador en el mapa y geocodificar
+function placeMarker(location) {
+    if (marker) {
+        marker.setPosition(location);
+    } else {
+        marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+    }
+    document.getElementById('ubicacion').value = location.lat() + ',' + location.lng();
+
+    geocoder.geocode({ 'location': location }, function(results, status) {
+        if (status === 'OK') {
+            if (results[0]) {
+                const addressComponents = results[0].address_components;
+                let municipio = '';
+                let direccionCompleta = results[0].formatted_address;
+
+                addressComponents.forEach(component => {
+                    if (component.types.includes('administrative_area_level_2')) {
+                        municipio = component.long_name;
+                    }
+                });
+
+                document.getElementById('municipio').value = municipio;
+                document.getElementById('direccion').value = direccionCompleta;
+            } else {
+                alert('No se encontraron resultados para la ubicación marcada.');
+            }
+        } else {
+            alert('Geocodificación fallida debido a: ' + status);
+        }
     });
-});
+}
 
-// Aleatorizador de Emojis
+// Aleatorización de emojis después de cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.background-emojis');
     const emojis = container.innerHTML;
 
-    // Duplicar los emojis
-    for (let i = 0; i < 4; i++) { // Puedes ajustar el número de duplicados
+    // Duplicar emojis para llenar el fondo
+    for (let i = 0; i < 4; i++) {
         container.innerHTML += emojis;
     }
 
@@ -145,4 +193,11 @@ document.addEventListener('DOMContentLoaded', () => {
         emoji.style.left = randomLeft + '%';
         emoji.style.animationDuration = randomDuration + 's';
     });
+});
+
+// Cargar Google Maps al final
+window.addEventListener('load', function() {
+    const script = document.createElement('script');
+    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap";
+    document.body.appendChild(script);
 });

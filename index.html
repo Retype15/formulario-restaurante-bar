@@ -5,34 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Restaurantes y Bares</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap" async defer></script>
-    <script>
-        let map;
-        let marker;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 23.1136, lng: -82.3666 },
-                zoom: 12
-            });
-
-            map.addListener('click', function(event) {
-                placeMarker(event.latLng);
-            });
-        }
-
-        function placeMarker(location) {
-            if (marker) {
-                marker.setPosition(location);
-            } else {
-                marker = new google.maps.Marker({
-                    position: location,
-                    map: map
-                });
-            }
-            document.getElementById('ubicacion').value = location.lat() + ',' + location.lng();
-        }
-    </script>
 </head>
 <body>
     <div class="background-emojis">
@@ -58,12 +30,6 @@
                 <legend>Información General</legend>
                 <label for="nombre">Nombre del Establecimiento:</label>
                 <input type="text" id="nombre" name="nombre" required><br><br>
-
-                <label for="direccion">Dirección:</label>
-                <input type="text" id="direccion" name="direccion" required><br><br>
-
-                <label for="municipio">Municipio:</label>
-                <input type="text" id="municipio" name="municipio" required><br><br>
 
                 <label for="telefono">Teléfono:</label>
                 <input type="text" id="telefono" name="telefono" required><br><br>
@@ -136,21 +102,23 @@
 
             <fieldset>
                 <legend>Datos del Menú</legend>
-                <div id="menu_container">
-                </div>
+                <div id="menu_container"></div>
                 <button type="button" id="add_plato">Añadir Plato</button><br><br>
             </fieldset>
 
             <fieldset>
                 <legend>Ubicación</legend>
                 <div id="map" style="height: 400px; width: 100%;"></div>
-                <input type="hidden" id="ubicacion" name="ubicacion">
+                <input type="text" id="ubicacion" name="ubicacion">
+                <input type="text" id="municipio" name="municipio">
+                <input type="text" id="direccion" name="direccion">
             </fieldset>
 
             <button type="submit">Guardar Datos</button>
         </form>
     </div>
-	
+
+    <!-- Cargar el script JavaScript personalizado al final -->
     <script src="script.js"></script>
 </body>
 </html>
