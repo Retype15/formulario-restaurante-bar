@@ -7,7 +7,7 @@ function toggleMenu() {
 // Función para verificar la contraseña y descargar el archivo
 function verifyPassword() {
     const enteredPassword = document.getElementById('passwordInput').value;
-    const correctPassword = "{{ENV_PASSWORD}}"; // Usar variable de entorno en Vercel
+    const correctPassword = process.env.ENV_PASSWORD; // Usar variable de entorno en Vercel
 
     if (enteredPassword === correctPassword) {
         downloadData();
