@@ -82,10 +82,10 @@ function placeMarker(latlng) {
                     document.getElementById('municipio').value = 'Municipio no disponible';
                 }
 				if (!calle) {
-                    document.getElementById('calle').value = 'Municipio no disponible';
+                    document.getElementById('calle').value = 'Calle no disponible';
                 }
                 if (!consejo) {
-                    document.getElementById('consejo').value = 'Municipio no disponible';
+                    document.getElementById('consejo').value = 'Consejo no disponible';
                 }
                 if (!ciudad) {
                     document.getElementById('ciudad').value = 'Ciudad no disponible';
@@ -229,6 +229,27 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
         }
     };
 
+    fetch('/save-data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(localData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'Archivo guardado correctamente') {
+            alert('Datos guardados correctamente en el servidor.');
+        } else {
+            alert('Error al guardar los datos.');
+        }
+    })
+    .catch(error => {
+        console.error('Error al enviar los datos:', error);
+        alert('Hubo un error al enviar los datos al servidor.');
+    });
+});
+/*
     const localName = localData.nombre.replace(/\s+/g, '_').toLowerCase();
     const fileName = `${localName}.json`;
 
@@ -240,7 +261,7 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
     a.click();
     document.body.removeChild(a); 
 });
-
+*/
 
 // Aleatorización de emojis después de cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
