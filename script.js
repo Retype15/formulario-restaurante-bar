@@ -1,7 +1,113 @@
-// Geocodificador de Google Maps (definido al cargar el mapa)
-let geocoder;
+// Inicialización de Leaflet para el mapa
 let map;
 let marker;
+
+// Crear el mapa
+function initMap() {
+    // Crear el mapa centrado en una ubicación inicial
+    map = L.map('map').setView([23.1136, -82.3666], 12); // Coordenadas iniciales de Cuba, por ejemplo.
+
+    // Añadir una capa de mapa base usando OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Configurar el marcador al hacer clic en el mapa
+    map.on('click', function(event) {
+        placeMarker(event.latlng);
+    });
+}
+
+// Colocar marcador en el mapa y obtener la ubicación
+function placeMarker(latlng) {
+    if (marker) {
+        marker.setLatLng(latlng);  // Si ya hay un marcador, lo mueve a la nueva ubicación
+    } else {
+        marker = L.marker(latlng).addTo(map);  // Si no hay marcador, lo crea en la ubicación indicada
+    }
+
+    // Actualizar el campo de ubicación con las coordenadas lat, lng
+    document.getElementById('ubicacion').value = latlng.lat + ',' + latlng.lng;
+
+    // Obtener la dirección de la ubicación con Nominatim (geocodificación de OpenStreetMap)
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latlng.lat}&lon=${latlng.lng}&format=json`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.address) {
+                const municipio = data.address.city || data.address.town || data.address.village || '';
+                const direccionCompleta = data.display_name;
+                // Rellenar los campos del formulario con la información obtenida
+                document.getElementById('municipio').value = municipio;
+                document.getElementById('direccion').value = direccionCompleta;
+            } else {
+                alert('No se encontró dirección para esta ubicación.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener la dirección:', error);
+            alert('Hubo un error al obtener la dirección.');
+        });
+}
+
+// Delegación de eventos para los botones de días y métodos de pago
+document.querySelectorAll('.dia').forEach(dia => {
+    dia.addEventListener('click', function() {
+        this.classList.toggle('selected');
+    });
+});
+
+document.querySelectorAll('.metodo').forEach(metodo => {
+    metodo.addEventListener('click', function() {
+        this.classList.toggle('selected');
+    });
+});
+
+// Delegación de eventos para los botones de platos
+document.getElementById('menu_container').addEventListener('click', function(event) {
+    if (event.target.classList.contains('toggle-plato')) {
+        const body = event.target.closest('.plato').querySelector('.plato-body');
+        body.classList.toggle('active');
+        event.target.textContent = body.classList.contains('active') ? '▲' : '▼';
+    }
+    if (event.target.classList.contains('remove-plato')) {
+        event.target.closest('.plato').remove();
+    }
+});
+
+// Actualización dinámica del nombre del plato en el encabezado
+document.getElementById('menu_container').addEventListener('input', function(event) {
+    if (event.target.name === 'plato_nombre') {
+        const header = event.target.closest('.plato').querySelector('.plato-nombre');
+        header.textContent = event.target.value || 'Nuevo Plato';
+    }
+});
+
+// Añadir nuevo plato
+document.getElementById('add_plato').addEventListener('click', function() {
+    const platoContainer = document.createElement('div');
+    platoContainer.classList.add('plato');
+    platoContainer.innerHTML = `
+        <div class="plato-header">
+            <button type="button" class="toggle-plato">▼</button>
+            <span class="plato-nombre">Nuevo Plato</span>
+            <button type="button" class="remove-plato">Eliminar</button>
+        </div>
+        <div class="plato-body">
+            <label for="plato_nombre">Nombre del Plato:</label>
+            <input type="text" name="plato_nombre" required><br><br>
+
+            <label for="plato_precio">Precio:</label>
+            <input type="number" name="plato_precio" required><br><br>
+
+            <label for="plato_calidad">Calidad:</label>
+            <input type="text" name="plato_calidad" required><br><br>
+
+            <label for="plato_pedidos">Cantidad de Pedidos Promedio:</label>
+            <input type="number" name="plato_pedidos" required><br><br>
+        </div>
+    `;
+    document.getElementById('menu_container').appendChild(platoContainer);
+});
 
 // Captura del formulario para crear el archivo JSON
 document.getElementById('localForm').addEventListener('submit', function(event) {
@@ -64,116 +170,6 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
     document.body.removeChild(a); 
 });
 
-// Delegación de eventos para los botones de días y métodos de pago
-document.querySelectorAll('.dia').forEach(dia => {
-    dia.addEventListener('click', function() {
-        this.classList.toggle('selected');
-    });
-});
-
-document.querySelectorAll('.metodo').forEach(metodo => {
-    metodo.addEventListener('click', function() {
-        this.classList.toggle('selected');
-    });
-});
-
-// Delegación de eventos para los botones de platos
-document.getElementById('menu_container').addEventListener('click', function(event) {
-    if (event.target.classList.contains('toggle-plato')) {
-        const body = event.target.closest('.plato').querySelector('.plato-body');
-        body.classList.toggle('active');
-        event.target.textContent = body.classList.contains('active') ? '▲' : '▼';
-    }
-    if (event.target.classList.contains('remove-plato')) {
-        event.target.closest('.plato').remove();
-    }
-});
-
-// Actualización dinámica del nombre del plato en el encabezado
-document.getElementById('menu_container').addEventListener('input', function(event) {
-    if (event.target.name === 'plato_nombre') {
-        const header = event.target.closest('.plato').querySelector('.plato-nombre');
-        header.textContent = event.target.value || 'Nuevo Plato';
-    }
-});
-
-// Añadir nuevo plato
-document.getElementById('add_plato').addEventListener('click', function() {
-    const platoContainer = document.createElement('div');
-    platoContainer.classList.add('plato');
-    platoContainer.innerHTML = `
-        <div class="plato-header">
-            <button type="button" class="toggle-plato">▼</button>
-            <span class="plato-nombre">Nuevo Plato</span>
-            <button type="button" class="remove-plato">Eliminar</button>
-        </div>
-        <div class="plato-body">
-            <label for="plato_nombre">Nombre del Plato:</label>
-            <input type="text" name="plato_nombre" required><br><br>
-
-            <label for="plato_precio">Precio:</label>
-            <input type="number" name="plato_precio" required><br><br>
-
-            <label for="plato_calidad">Calidad:</label>
-            <input type="text" name="plato_calidad" required><br><br>
-
-            <label for="plato_pedidos">Cantidad de Pedidos Promedio:</label>
-            <input type="number" name="plato_pedidos" required><br><br>
-        </div>
-    `;
-    document.getElementById('menu_container').appendChild(platoContainer);
-});
-
-// Inicializar el mapa al cargar la página
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: 23.1136, lng: -82.3666 },
-        zoom: 12
-    });
-
-    geocoder = new google.maps.Geocoder();
-
-    map.addListener('click', function(event) {
-        placeMarker(event.latLng);
-    });
-}
-
-// Colocar marcador en el mapa y geocodificar
-function placeMarker(location) {
-    if (marker) {
-        marker.setPosition(location);
-    } else {
-        marker = new google.maps.Marker({
-            position: location,
-            map: map
-        });
-    }
-    document.getElementById('ubicacion').value = location.lat() + ',' + location.lng();
-
-    geocoder.geocode({ 'location': location }, function(results, status) {
-        if (status === 'OK') {
-            if (results[0]) {
-                const addressComponents = results[0].address_components;
-                let municipio = '';
-                let direccionCompleta = results[0].formatted_address;
-
-                addressComponents.forEach(component => {
-                    if (component.types.includes('administrative_area_level_2')) {
-                        municipio = component.long_name;
-                    }
-                });
-
-                document.getElementById('municipio').value = municipio;
-                document.getElementById('direccion').value = direccionCompleta;
-            } else {
-                alert('No se encontraron resultados para la ubicación marcada.');
-            }
-        } else {
-            alert('Geocodificación fallida debido a: ' + status);
-        }
-    });
-}
-
 // Aleatorización de emojis después de cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.background-emojis');
@@ -195,9 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Cargar Google Maps al final
+// Cargar Leaflet.js al finalizar la carga de la página
 window.addEventListener('load', function() {
-    const script = document.createElement('script');
-    script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAOVYRIgupAurZup5y1PRh8Ismb1A3lLao&libraries=places&callback=initMap";
-    document.body.appendChild(script);
+    initMap();
 });
+
+

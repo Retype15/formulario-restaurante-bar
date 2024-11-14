@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Restaurantes y Bares</title>
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Cargar los estilos de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
     <div class="background-emojis">
@@ -109,9 +112,9 @@
             <fieldset>
                 <legend>Ubicación</legend>
                 <div id="map" style="height: 400px; width: 100%;"></div>
-                <input type="text" id="ubicacion" name="ubicacion">
-                <input type="text" id="municipio" name="municipio">
-                <input type="text" id="direccion" name="direccion">
+                <input type="text" id="ubicacion" name="ubicacion" readonly>
+                <input type="text" id="municipio" name="municipio" readonly>
+                <input type="text" id="direccion" name="direccion" readonly>
             </fieldset>
 
             <button type="submit">Guardar Datos</button>
@@ -120,5 +123,8 @@
 
     <!-- Cargar el script JavaScript personalizado al final -->
     <script src="script.js"></script>
+
+    <!-- Cargar Leaflet.js -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </body>
 </html>
