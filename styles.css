@@ -1,7 +1,7 @@
 /* Estilos generales */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f0f2f5 25%, #e9ecef 25%, #e9ecef 50%, #f0f2f5 50%, #f0f2f5 75%, #e9ecef 75%, #e9ecef 100%);
+    background: linear-gradient(135deg, #f0f2f5 25%, #e9ecef 25%, #e9ecef 50%, #f0f2f5 50%, #f0f2f5 75%, #e9ecef 55%, #e9ecef 100%);
 	background-size: 56.57px 56.57px;
 	background-attachment: fixed;
     margin: 0;
@@ -118,7 +118,8 @@ button:hover {
 .dia,
 .metodo,
 .entrega,
-.reserva {
+.reserva
+{
     padding: 10px;
     background: #e9ecef;
     border-radius: 5px;
@@ -129,19 +130,22 @@ button:hover {
 .dia:hover,
 .metodo:hover,
 .entrega:hover,
-.reserva:hover {
+.reserva:hover
+{
     background: #ced4da;
 }
 
 .dia.selected,
 .metodo.selected,
 .entrega.selected,
-.reserva.selected {
+.reserva.selected
+{
     background: #007bff;
     color: #fff;
 }
 
-#metodos_pago_container input {
+#metodos_pago_container input
+{
     display: block;
     margin-bottom: 10px;
 }

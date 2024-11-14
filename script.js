@@ -106,9 +106,6 @@ function placeMarker(latlng) {
         });
 }
 
-
-
-
 // Delegación de eventos para los botones de días y métodos de pago
 document.querySelectorAll('.dia').forEach(dia => {
     dia.addEventListener('click', function() {
