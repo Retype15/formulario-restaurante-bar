@@ -239,7 +239,15 @@ document.getElementById('add_client').addEventListener('click', function() {
                 <option value="3">Sin gluten</option>
                 <option value="4">Sin lactosa</option>
                 <option value="5">Otros</option> 
-            </select>	
+            </select>
+			
+			<label for="client_gasto">Gasto promedio por visita:</label>
+			<input type="number" name="client_gasto" placeholder="El gasto promedio que gastas por visita" required>
+			
+			<label for="client_preferences">Seleccione el producto que mas consume:</label>
+			<select id="client_preferences" name="client_preferences">
+				<option value="0">Sin preferencias</option>
+			</select>
 			
 			<label for="client_general_calif">Calificacion general:</label>
 			<select id="client_general_calif" name="client_general_calif" required>
@@ -286,6 +294,7 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
 		genero: parseInt(client.querySelector('[name="client_genero"]').value),
 		frec_visitas: parseInt(client.querySelector('[name="client_frec_visitas"]').value),
 		pref_alimentaria: parseInt(client.querySelector('[name="client_pref_alim"]').value),
+		gasto: parseInt(client.querySelector('[name="client_gasto"]').value),
 		general_calif: parseInt(client.querySelector('[name="client_general_calif"]').value),
 		recomendado: parseInt(client.querySelector('[name="client_recomendado"]').value)
     }));
