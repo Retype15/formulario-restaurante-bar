@@ -150,7 +150,8 @@ button:hover {
     margin-bottom: 10px;
 }
 
-.plato {
+.plato,
+.client {
     border: 1px solid #ddd;
     padding: 10px;
     margin-bottom: 10px;
@@ -158,7 +159,8 @@ button:hover {
     background: #f8f9fa;
 }
 
-.plato-header {
+.plato-header,
+.client-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -168,21 +170,25 @@ button:hover {
     border-radius: 5px;
 }
 
-.plato-body {
+.plato-body,
+.client-body  {
     display: none;
     padding: 10px;
 }
 
-.plato-body.active {
+.plato-body.active,
+.client-body.active  {
     display: block;
 }
 
-.plato label {
+.plato label,
+.client label {
     display: block;
     margin-bottom: 5px;
 }
 
-.plato input {
+.plato input,
+.client input {
     display: block;
     margin-bottom: 10px;
 }
