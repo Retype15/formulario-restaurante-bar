@@ -140,14 +140,7 @@ document.getElementById('menu_container').addEventListener('click', function(eve
     }
     if (event.target.classList.contains('remove-plato')) {
         event.target.closest('.plato').remove();
-    }
-});
-
-// Actualización dinámica del nombre del plato en el encabezado
-document.getElementById('menu_container').addEventListener('input', function(event) {
-    if (event.target.name === 'plato_nombre') {
-        const header = event.target.closest('.plato').querySelector('.plato-nombre');
-        header.textContent = event.target.value || 'Nuevo Plato';
+		actualizarOpcionesClientes();
     }
 });
 
@@ -159,6 +152,7 @@ document.getElementById('client_container').addEventListener('click', function(e
     }
     if (event.target.classList.contains('remove-client')) {
         event.target.closest('.client').remove();
+		actualizarOpcionesClientes();
     }
 });
 
@@ -170,10 +164,67 @@ document.getElementById('client_container').addEventListener('input', function(e
     }
 });
 
+let platoIDCounter = 1; // Contador global para generar IDs únicos
+
+// Función para actualizar las opciones de los productos más consumidos en todos los clientes
+function actualizarOpcionesClientes() {
+    const menuContainer = document.getElementById('menu_container');
+    const clientes = document.querySelectorAll('.client');
+
+    // Obtener todos los nombres de platos y sus IDs
+    const platos = menuContainer.querySelectorAll('.plato');
+    const opcionesPlatos = Array.from(platos).map((plato) => {
+        const platoID = plato.getAttribute('data-id'); // ID único del plato
+        const nombrePlato = plato.querySelector('[name="plato_nombre"]').value || `Plato ${platoID}`;
+        return { id: platoID, text: nombrePlato };
+    });
+
+    // Actualizar el campo client_preferences en cada cliente
+    clientes.forEach((cliente) => {
+        const selectPreferences = cliente.querySelector('[name="client_preferences"]');
+
+        // Guardar la opción seleccionada previamente
+        const opcionSeleccionada = selectPreferences.value;
+
+        // Limpiar las opciones existentes
+        selectPreferences.innerHTML = '<option value="0">Sin preferencias</option>';
+
+        // Agregar las nuevas opciones basadas en los platos
+        opcionesPlatos.forEach(opcion => {
+            const option = document.createElement('option');
+            option.value = opcion.id;
+            option.textContent = opcion.text;
+            selectPreferences.appendChild(option);
+        });
+
+        // Restaurar la opción seleccionada si aún existe
+        if (opcionesPlatos.some(opcion => opcion.id === opcionSeleccionada)) {
+            selectPreferences.value = opcionSeleccionada;
+        } else {
+            // Si la opción ya no existe, establecer en "Sin preferencias"
+            selectPreferences.value = "0";
+        }
+    });
+}
+
+// Actualización dinámica del nombre del plato en el encabezado
+document.getElementById('menu_container').addEventListener('input', function(event) {
+    if (event.target.name === 'plato_nombre') {
+        const header = event.target.closest('.plato').querySelector('.plato-nombre');
+        header.textContent = event.target.value || 'Nuevo Plato';
+		actualizarOpcionesClientes();
+    }
+});
+
 // Añadir nuevo plato
 document.getElementById('add_plato').addEventListener('click', function() {
     const platoContainer = document.createElement('div');
     platoContainer.classList.add('plato');
+	
+	// Asignar un ID único al plato
+    const platoID = `plato-${platoIDCounter++}`;
+    platoContainer.setAttribute('data-id', platoID);
+	
     platoContainer.innerHTML = `
         <div class="plato-header">
             <button type="button" class="toggle-plato">▼</button>
@@ -195,6 +246,8 @@ document.getElementById('add_plato').addEventListener('click', function() {
         </div>
     `;
     document.getElementById('menu_container').appendChild(platoContainer);
+	
+	actualizarOpcionesClientes();
 });
 
 //Anadir nuevos clientes
@@ -209,9 +262,9 @@ document.getElementById('add_client').addEventListener('click', function() {
         </div>
         <div class="client-body">
             <label for="plato_nombre">Nombre del Cliente:</label>
-            <input type="text" name="client_nombre" required>
+            <input type="text" name="client_nombre" placeholder="Ej. Julio Cruz Bermudez" required>
 			<label for="client_edad">Edad:</label>
-			<input type="number" name="client_edad" required>
+			<input type="number" name="client_edad" placeholder="Edad aquí" required>
 			
 			<label for="client_genero">Genero del cliente:</label>
 			<select id="client_genero" name="client_genero" required>
@@ -233,7 +286,7 @@ document.getElementById('add_client').addEventListener('click', function() {
 			
 			<label for="client_pref_alim">Preferencias alimentarias:</label>
 			<select id="client_pref_alim" name="client_pref_alim" required>
-				<option value="0">Sin preferencias</option>
+				<option value="0">Sin preferencias especiales</option>
                 <option value="1">Vegetariano</option>
                 <option value="2">Vegano</option>
                 <option value="3">Sin gluten</option>
@@ -242,10 +295,10 @@ document.getElementById('add_client').addEventListener('click', function() {
             </select>
 			
 			<label for="client_gasto">Gasto promedio por visita:</label>
-			<input type="number" name="client_gasto" placeholder="El gasto promedio que gastas por visita" required>
+			<input type="number" name="client_gasto" placeholder="El gasto promedio por visita" required>
 			
 			<label for="client_preferences">Seleccione el producto que mas consume:</label>
-			<select id="client_preferences" name="client_preferences">
+			<select id="client_preferences" name="client_preferences" required>
 				<option value="0">Sin preferencias</option>
 			</select>
 			
@@ -268,6 +321,10 @@ document.getElementById('add_client').addEventListener('click', function() {
         </div>
     `;
     document.getElementById('client_container').appendChild(clientContainer);
+	
+
+    // Actualizar las opciones del cliente recién agregado
+    actualizarOpcionesClientes();
 });
 
 // Captura del formulario para crear el archivo JSON
