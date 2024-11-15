@@ -32,43 +32,34 @@
             <fieldset>
                 <legend>Información General</legend>
                 <label for="nombre">Nombre del Establecimiento:</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Nombre del establecimiento" required><br>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre del establecimiento" required><br><br>
 
                 <label for="telefono">Teléfono:</label>
-                <input type="text" id="telefono" name="telefono" placeholder="Telefono del establecimiento (Opcional)"><br>
+                <input type="text" id="telefono" name="telefono" placeholder="Telefono del establecimiento (Opcional)"><br><br>
 
                 <label for="correo">Correo Electrónico:</label>
-                <input type="email" id="correo" name="correo" placeholder="Correo del establecimiento (Opcional)"><br>
+                <input type="email" id="correo" name="correo" placeholder="Correo del establecimiento (Opcional)"><br><br>
 
                 <label for="pagina_web">Página Web:</label>
-                <input type="url" id="pagina_web" name="pagina_web" placeholder="Pagina web del negocio (Opcional)"><br>				
-				
+                <input type="url" id="pagina_web" name="pagina_web" placeholder="Pagina web del negocio (Opcional)"><br><br>
+
+                <label for="tipo_cocina">Tipo de Cocina:</label>
+                <input type="text" id="tipo_cocina" name="tipo_cocina" placeholder="Tipo de cocina u especialidad" required><br><br>
+
                 <label for="tipo_establecimiento">Tipo de Establecimiento:</label>
                 <select id="tipo_establecimiento" name="tipo_establecimiento" required>
                     <option value="0">Restaurante</option>
                     <option value="1">Bar</option>
-                </select><br>
-				
-				<label for="tipo_cocina">Tipo de Cocina:</label>
-				<select id="tipo_cocina" name="tipo_cocina" required>
-                    <option value="0">Cubana</option>
-                    <option value="1">China</option>
-                    <option value="2">Italiana</option>
-                    <option value="3">Mexicana</option>
-                    <option value="4">Japonesa</option>
-                    <option value="5">Mixta</option>
-                    <option value="6">Otros</option>
-                </select><br>
-				
+                </select><br><br>
             </fieldset>
 
             <fieldset>
                 <legend>Datos de Operación</legend>
                 <label for="horario_apertura">Hora de Apertura:</label>
-                <input type="time" id="horario_apertura" name="horario_apertura" required><br>
+                <input type="time" id="horario_apertura" name="horario_apertura" required><br><br>
 
                 <label for="horario_cierre">Hora de Cierre:</label>
-                <input type="time" id="horario_cierre" name="horario_cierre" required><br>
+                <input type="time" id="horario_cierre" name="horario_cierre" required><br><br>
 
                 <label for="dias_operacion">Días de Operación:</label><br>
                 <div class="dias-operacion">
@@ -82,15 +73,7 @@
                 </div><br>
 
                 <label for="capacidad">Capacidad:</label>
-                <input type="number" id="capacidad" name="capacidad" required><br>
-
-                <label for="opciones_reserva">Opciones de Reserva:</label><br>
-                <div class="opciones-reserva">
-                    <div class="reserva" data-reserva="0">Reservas en linea</div>
-                    <div class="reserva" data-reserva="1">Reservas por teléfono</div>
-                    <div class="reserva" data-reserva="2">Reservas en persona</div>
-                    <div class="reserva" data-reserva="3">Otros</div>
-                </div>
+                <input type="number" id="capacidad" name="capacidad" required><br><br>
 
                 <label for="opciones_entrega">Opciones de Entrega:</label><br>
                 <div class="opciones-entrega">
@@ -99,18 +82,24 @@
                     <div class="entrega" data-entrega="2">Entrega en local</div>
                     <div class="entrega" data-entrega="3">Otros</div>
                 </div><br>
+
+                <label for="opciones_reserva">Opciones de Reserva:</label><br>
+                <div class="opciones-reserva">
+                    <div class="reserva" data-reserva="0">Reservas en linea</div>
+                    <div class="reserva" data-reserva="1">Reservas por teléfono</div>
+                    <div class="reserva" data-reserva="2">Reservas en persona</div>
+                    <div class="reserva" data-reserva="3">Otros</div>
+                </div>
             </fieldset>
 
             <fieldset>
                 <legend>Datos Financieros</legend>
                 <label for="rango_precios_min">Rango de Precios Mínimo:</label>
-                <input type="number" id="rango_precios_min" name="rango_precios_min" placeholder="El producto en venta que menos vale" required><br>
+                <input type="number" id="rango_precios_min" name="rango_precios_min" placeholder="El producto en venta que menos vale" required><br><br>
 
                 <label for="rango_precios_max">Rango de Precios Máximo:</label>
-                <input type="number" id="rango_precios_max" name="rango_precios_max" placeholder="El producto en venta que mas vale" required><br>
-				
-				<!-- Aqui deberia incluir Que datos financieros sea un booton que indique de Economico, medio, alto o lujoso -->
-				
+                <input type="number" id="rango_precios_max" name="rango_precios_max" placeholder="El producto en venta que mas vale" required><br><br>
+
                 <label for="metodos_pago">Métodos de Pago:</label><br>
                 <div class="metodos-pago">
                     <div class="metodo" data-metodo="0">En efectivo</div>
@@ -120,41 +109,41 @@
                 </div><br>
 
                 <label for="promociones_descuentos">Promociones y Descuentos:</label>
-                <input type="text" id="promociones_descuentos" name="promociones_descuentos" placeholder="Ej. SI, NO">
+                <input type="text" id="promociones_descuentos" name="promociones_descuentos" placeholder="Ej. SI, NO"><br><br>
             </fieldset>
 
             <fieldset>
                 <legend>Datos del Menú</legend>
                 <div id="menu_container"></div>
-                <button type="button" id="add_plato">Añadir Plato</button><br>
+                <button type="button" id="add_plato">Añadir Plato</button><br><br>
             </fieldset>
 
 			<fieldset>
 				<legend>Ubicación</legend>
 				<div id="map" style="height: 400px; width: 100%;"></div>
 
-				<button type="button" id="obtener_ubicacion">Obtener mi ubicación</button><br>
+				<button type="button" id="obtener_ubicacion">Obtener mi ubicación</button><br><br>
 
 				<!-- Campos para la dirección desglosada -->
 				<label for="calle">Calle:</label>
-				<input type="text" id="calle" name="calle" placeholder="Ej. Calle Falsa 123"><br>
+				<input type="text" id="calle" name="calle" placeholder="Ej. Calle Falsa 123"><br><br>
 
 				<label for="consejo">Consejo:</label>
-				<input type="text" id="consejo" name="consejo" placeholder="Ej. Barrio Centro"><br>
+				<input type="text" id="consejo" name="consejo" placeholder="Ej. Barrio Centro"><br><br>
 
 				<label for="municipio">Municipio:</label>
-				<input type="text" id="municipio" name="municipio" placeholder="Ej. Municipio Central"><br>
+				<input type="text" id="municipio" name="municipio" placeholder="Ej. Municipio Central"><br><br>
 
-				<label for="provincia">Provincia:</label>
-				<input type="text" id="provincia" name="provincia" placeholder="Ej. provincia Habana"><br>
+				<label for="ciudad">Ciudad:</label>
+				<input type="text" id="ciudad" name="ciudad" placeholder="Ej. Ciudad XYZ"><br><br>
 
 				<label for="codigo_postal">Código Postal:</label>
-				<input type="text" id="codigo_postal" name="codigo_postal" placeholder="Ej. 12345"><br>
+				<input type="text" id="codigo_postal" name="codigo_postal" placeholder="Ej. 12345"><br><br>
 
 				<label for="pais">País:</label>
-				<input type="text" id="pais" name="pais" placeholder="Ej. País ABC"><br>
+				<input type="text" id="pais" name="pais" placeholder="Ej. País ABC"><br><br>
 
-				<input type="text" id="ubicacion" name="ubicacion" readonly placeholder="Coordenadas de ubicación"><br>
+				<input type="text" id="ubicacion" name="ubicacion" readonly placeholder="Coordenadas de ubicación"><br><br>
 			</fieldset>
 
 

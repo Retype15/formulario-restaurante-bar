@@ -63,8 +63,8 @@ function placeMarker(latlng) {
                 //const nombre = data.address.house_number || '';  // Número de la casa (ej. 158)
                 const calle = data.address.road || '';  // Nombre de la calle (ej. "Lugareño")
                 const consejo = data.address.suburb || data.address.neighbourhood || '';  // Barrio o consejo (si está disponible)
-                const municipio = data.address.city || data.address.town || data.address.village || data.address.county || '';  // Municipio o ciudad
-                const ciudad = data.address.state || '';  // Ciudad o estado
+                const municipio = data.address.city || data.address.town || data.address.village || data.address.county || '';  // Municipio o provincia
+                const provincia = data.address.state || '';  // Ciudad o estado
                 const codigoPostal = data.address.postcode || '';  // Código postal
                 const pais = data.address.country || '';  // País (ej. Cuba)
 
@@ -73,7 +73,7 @@ function placeMarker(latlng) {
                 document.getElementById('calle').value = calle || ''; // Nombre de la calle
                 document.getElementById('consejo').value = consejo || ''; // Barrio o consejo
                 document.getElementById('municipio').value = municipio || ''; // Municipio
-                document.getElementById('ciudad').value = ciudad || ''; // Ciudad
+                document.getElementById('provincia').value = provincia || ''; // Ciudad
                 document.getElementById('codigo_postal').value = codigoPostal || ''; // Código postal
                 document.getElementById('pais').value = pais || ''; // País
 
@@ -87,8 +87,8 @@ function placeMarker(latlng) {
                 if (!consejo) {
                     document.getElementById('consejo').value = 'Consejo no disponible';
                 }
-                if (!ciudad) {
-                    document.getElementById('ciudad').value = 'Ciudad no disponible';
+                if (!provincia) {
+                    document.getElementById('provincia').value = 'Ciudad no disponible';
                 }
                 if (!codigoPostal) {
                     document.getElementById('codigo_postal').value = 'Código postal no disponible';
@@ -184,8 +184,8 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
 
     const diasOperacion = Array.from(document.querySelectorAll('.dia.selected')).map(el => parseInt(el.getAttribute('data-dia')));
     const metodosPago = Array.from(document.querySelectorAll('.metodo.selected')).map(el => parseInt(el.getAttribute('data-metodo')));
-    const opcionesEntrega = Array.from(document.querySelectorAll('.entrega.selected')).map(el => parseInt(el.getAttribute('opciones-entrega')));
-    const opcionesReserva = Array.from(document.querySelectorAll('.reserva.selected')).map(el => parseInt(el.getAttribute('opciones-reserva')));
+    const opcionesEntrega = Array.from(document.querySelectorAll('.entrega.selected')).map(el => parseInt(el.getAttribute('data-entrega')));
+    const opcionesReserva = Array.from(document.querySelectorAll('.reserva.selected')).map(el => parseInt(el.getAttribute('data-reserva')));
 	
     const platos = Array.from(document.querySelectorAll('.plato')).map(plato => ({
         nombre: plato.querySelector('[name="plato_nombre"]').value,
@@ -200,7 +200,7 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
     const calle = document.getElementById('calle').value;
     const consejo = document.getElementById('consejo').value;
     const municipio = document.getElementById('municipio').value;
-    const ciudad = document.getElementById('ciudad').value;
+    const provincia = document.getElementById('provincia').value;
     const codigoPostal = document.getElementById('codigo_postal').value;
     const pais = document.getElementById('pais').value;
 
@@ -232,7 +232,7 @@ document.getElementById('localForm').addEventListener('submit', function(event) 
             calle: calle, // Nuevo campo: Calle
             consejo: consejo, // Nuevo campo: Consejo o vecindario
             municipio: municipio, // Nuevo campo: Municipio
-            ciudad: ciudad, // Nuevo campo: Ciudad
+            provincia: provincia, // Nuevo campo: Provincia
             codigo_postal: codigoPostal, // Nuevo campo: Código postal
             pais: pais, // Nuevo campo: País
             coordenadas: coordenadas // Coordenadas del mapa
